@@ -20,6 +20,7 @@ function LM:__init(opt)
   self.idx_to_token = utils.getopt(opt, 'idx_to_token')
   self.dropout = utils.getopt(opt, 'dropout', 0)
   
+  
   local W, D = self.input_encoding_size, self.image_vector_dim
   local V, H = self.vocab_size, self.rnn_size
   local S =0 --- size of spatial feature----------------------------!!!!!!!!!!!!!!! S = 0/10/64
@@ -44,11 +45,7 @@ function LM:__init(opt)
   --self.image_encoder:add(nn.SpatialConvolution(512, 16, 1, 1))
   --self.image_encoder:add(nn.ReLU(true))
   --self.image_encoder:add(nn.View(-1):setNumInputDims(3))-- (B, 16,7,7)->(B,784)
-  
-  ---!!!!!!!!!!!!!!!!!!!!! if you want 1*1conv first
-  --self.image_encoder:add(nn.SpatialConvolution(512*3, 256, 1, 1))---!!!!555
-  --self.image_encoder:add(nn.SpatialConvolution(256, W, 1, 1))
-  --self.image_encoder:add(nn.ReLU(true))
+
   ------------------------------------------
   
   self.image_encoder:add(nn.SpatialAveragePooling(7,7))------!!!!2222(B, 512,7,7)->(B, 512,1,1)

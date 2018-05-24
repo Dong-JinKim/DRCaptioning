@@ -3,8 +3,8 @@ require 'torch'
 require 'nn'
 require 'nngraph'
 
-require 'densecap.LanguageModel_tLSTM2'--LanguageModel / LanguageModel2  / LanguageModel_union     /LanguageModel_att
-require 'densecap.LocalizationLayer_union3'--LocalizationLayer          / LocalizationLayer_union1 / LocalizationLayer_union2
+require 'densecap.LanguageModel3'--LanguageModel / LanguageModel2  / LanguageModel_union     /LanguageModel_att
+require 'densecap.LocalizationLayer'--LocalizationLayer          / LocalizationLayer_union1 / LocalizationLayer_union2
 require 'densecap.modules.BoxRegressionCriterion'
 require 'densecap.modules.BilinearRoiPooling'
 require 'densecap.modules.ApplyBoxTransform'
@@ -159,7 +159,7 @@ function DenseCapModel:_buildRecognitionNet()
   local pos_roi_boxes = nn.PosSlicer(){roi_boxes, gt_boxes}
   
   --local subjobj = nn.UnionSlicer(){pos_roi_codes,idx}--FC7 feat recogbase
-  local subjobj = nn.UnionSlicer(){roi_feats,idx}--CONV5 feat all3
+  --local subjobj = nn.UnionSlicer(){roi_feats,idx}--CONV5 feat all3
   
   
   
@@ -168,13 +168,16 @@ function DenseCapModel:_buildRecognitionNet()
   local final_boxes = nn.ApplyBoxTransform(){pos_roi_boxes, final_box_trans}
   
   
-  --local Pair_output = nn.Pairs(){pos_roi_codes,union,final_boxes}
   
-  --local lm_input = {pos_roi_codes, gt_labels}
-  local lm_input = {union, gt_labels ,spatial,subjobj}----!!!!!!!!!!!!!!!!!! 2222233333?????
-  --local lm_input = {union, gt_labels ,spatial}
   
-  --local lm_input = {Pair_output, gt_labels}
+  --local lm_input = {pos_roi_codes, gt_labels}--for only subjobj?
+  --local lm_input = {union, gt_labels ,spatial,subjobj}--if we use all subj+obj+union(tLSTM etc.)
+  --local lm_input = {union, gt_labels ,spatial}-- for only union or subjobj+union (early fusion)
+  
+  local Pair_output = nn.Pairs(){pos_roi_codes,union,final_boxes} --for only subjobj
+  local lm_input = {Pair_output, gt_labels}
+  
+  
   
   local lm_output = self.nets.language_model(lm_input)
 
@@ -184,7 +187,7 @@ function DenseCapModel:_buildRecognitionNet()
   pos_roi_codes:annotate{name='code_slicer'}
   pos_roi_boxes:annotate{name='box_slicer'}
   final_box_trans:annotate{name='box_reg_branch'}
-  local inputs = {roi_feats, roi_boxes, gt_boxes, gt_labels , union ,spatial, idx}----!!!333334444
+  local inputs = {roi_feats, roi_boxes, gt_boxes, gt_labels , union}--,spatial}--, idx}----!!!333334444
   local outputs = {
     objectness_scores,
     pos_roi_boxes, final_box_trans, final_boxes,
@@ -220,7 +223,7 @@ Input: Table with the following keys:
 function DenseCapModel:setTestArgs(kwargs)
   self.nets.localization_layer:setTestArgs{
     nms_thresh = utils.getopt(kwargs, 'rpn_nms_thresh', 0.7),
-    max_proposals = utils.getopt(kwargs, 'num_proposals', 50)---!!!! originally 1000
+    max_proposals = utils.getopt(kwargs, 'num_proposals', 75)---!!!! originally 1000
   }
   self.opt.final_nms_thresh = utils.getopt(kwargs, 'final_nms_thresh', 0.3)
 end
@@ -564,8 +567,14 @@ function DenseCapModel:forward_backward(data)
       --part_target[{{},{2,16}}]:copy(gt_labels[{{},{16,30}}])---!!!! MTL_real
       
       
-      gt_labels1 = gt_labels[{{},{1,15}}]----!!!!!
       
+      if self.nets.language_model.label_idx then---!!!!! if there is label index 99999999999999
+        part_target = part_target:index(1,self.nets.language_model.label_idx)
+      end
+      
+      
+      gt_labels1 = gt_labels[{{},{1,15}}]----!!!!!
+      --dbg()
       part_loss = self.crits.cls_crit:forward(part_output, part_target)
       part_loss = part_loss * 0.1
       grad_cls_output = self.crits.cls_crit:backward(part_output, part_target)

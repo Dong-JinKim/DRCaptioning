@@ -37,10 +37,10 @@ function LM:__init(opt)
   self.image_encoder:add(nn.View(-1):setNumInputDims(3))-- (B, 512,7,7)->(B,25088)
   self.image_encoder:add(nn.Linear(25088,512))
   self.image_encoder:add(nn.ReLU(true))
-  --self.image_encoder:add(nn.Dropout(0.5))
+  self.image_encoder:add(nn.Dropout(0.5))
   self.image_encoder:add(nn.Linear(512,512))
   self.image_encoder:add(nn.ReLU(true))
-  --self.image_encoder:add(nn.Dropout(0.5))
+  self.image_encoder:add(nn.Dropout(0.5))
 
 
   if S==0 then
@@ -202,8 +202,8 @@ function LM:__init(opt)
   self.net = nn.Sequential()
   self.net:add(combine)
   
-  --self.net:add(nn.JoinTable(2, 2))----( concat/attention)
-  self.net:add(nn.CAddTable())---(sum),
+  self.net:add(nn.JoinTable(2, 2))----( concat/attention)
+  --self.net:add(nn.CAddTable())---(sum),
   --self.net:add(nn.CMulTable())---(mul)
 
 
@@ -216,7 +216,7 @@ function LM:__init(opt)
     if not (ATT_temp) then
     
       self.out:add(self.view_in)-- (B,1,3*H)->(B,3*H)
-      self.out:add(nn.Linear(H, H))
+      self.out:add(nn.Linear(H*3, H))
       self.out:add(nn.ReLU(true))
       self.out:add(nn.Dropout(0.5))---!!!
     
@@ -498,9 +498,9 @@ function LM:sample(union_vectors, subj_vectors, obj_vectors,Masks)
     
     
     ---concat/attention
-    --local scores_tmp = self.out:forward(  torch.cat( {rnnout1, rnnout2,rnnout3} ,3)    )
+    local scores_tmp = self.out:forward(  torch.cat( {rnnout1, rnnout2,rnnout3} ,3)    )
     --sum
-    local scores_tmp = self.out:forward(  rnnout1 + rnnout2 + rnnout3     )--!!!
+    --local scores_tmp = self.out:forward(  rnnout1 + rnnout2 + rnnout3     )--!!!
     --mul
     --local scores_tmp = self.out:forward(  torch.cmul(torch.cmul(rnnout1,rnnout2),srnnout3 )    )--!!!
     
@@ -570,8 +570,8 @@ function LM:sample(union_vectors, subj_vectors, obj_vectors,Masks)
   
   
   --dbg()
-  self.output = seq
-  --self.output = {seq,transfer,POS}---!!!777
+  --self.output = seq
+  self.output = {seq,transfer,POS}---!!!777
   return self.output
 end
 

@@ -1,0 +1,834 @@
+checkpoint1e5.t7
+=>learning rate 1e-5 (batch 128)
+
+checkpoint1e6.t7
+=>learning rate 1e-6, fineturned from checkpoint1e5.t7 (batch 128)
+
+checkpoint1e5_2.t7
+=>batch size 64
+
+
+checkpoint1e6_2.t7
+=>batch size 128 , finetune from checkpoint trained.t7
+
+checkpoint_base.t7
+=>without spatial mask, learning rate 1e-6, finetuned from trained.t7
+
+
+-
+
+
+(LanguageModel - LocalizationLayer - Pairs)
+checkpoint1e5_VRD.t7  
+=>learning rate 1e-5 (batch 128) on VRD dataset
+
+checkpoint1e6_VRD.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+
+checkpoint1e6_2_VRD.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset fineturned from checkpoint1e5_VRD.t7
+
+
+
+(LanguageModel2 - LocalizationLayer - Pairs2)
+checkpoint1e6_VRD2.t7 (with BN) 
+=>learning rate 1e-6 (batch 128) on VRD dataset
+didnt use spatial mask, use naive coordinate information
+=>higher loss value than VRD1--------------------------------fail!!! don't use BN "left left left left ...."
+
+
+checkpoint1e5_VRD2.t7 (with BN)
+=>explode too soon. failed "left left left left ...."
+
+
+(LanguageModel2 - LocalizationLayer - Pairs2)
+checkpoint1e6_VRD2_noBN.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use naive coordinate information
+no using BN
+=> alway starts with "person"!!!!
+
+
+--------------------------------------------------------------------
+(LanguageModel_union(512,S=0) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint1e6_VRD2_union.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "only union BB" as input
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union2(pairs_RPN))
+checkpoint1e6_VRD2_union2.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj" feat as input
+
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union2(pairs_RPN) )
+checkpoint_1e6_VRD2_union2dropout.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj" feat as input (w/ dropout)
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union2(pairs_RPN) )
+checkpoint_1e6_VRD2_union2thin.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj" feat as input (1536*256+256*512 instead of 1536*512)
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union2(pairs_RPN) )
+checkpoint_1e6_VRD2_union2thin2_RE.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj" feat as input (1536*128+128*512 instead of 1536*512)
+
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union2(pairs_RPN) )
+checkpoint_1e6_VRD2_union2thin3.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj" feat as input (1536*256+256*512 instead of 1536*512)
+switch order of 1*1covn and ave pooling
+----------------------------------------------------------------------
+
+---------------------------------------------------------------------
+(LanguageModel_union(512*3,S=64) - LocalizationLayer_union2(pairs_RPN1) )
+checkpoint_VRD2_union_S1_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj"+ "spaitial mask" information
+
+
+(LanguageModel_union(512*3,S=10) - LocalizationLayer_union2(pairs_RPN2))
+(Deleted!!!!)checkpoint_VRD2_union_S2_1e6.t7   
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj"+ "coordinate" information
+---------------------------------------------------------------------
+
+--------------------------------------------------------
+(LanguageModel_union(512,S=64) - LocalizationLayer_union1(pairs_RPN1))
+checkpoint_VRD2_union2_S1_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ "spaitial mask" information
+
+
+
+(LanguageModel_union(512,S=10) - LocalizationLayer_union1(pairs_RPN2) )
+checkpoint_VRD2_union2_S2_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ "coordinate" information
+
+
+(LanguageModel_union(512,S=10) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VRD2_union2_S2_1e6_test.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ "coordinate" information
+use [0000] as spatial feat
+
+
+(LanguageModel_union(512,S=10) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VRD2_union2_S2dropout_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ "coordinate" information
+added dropout
+
+
+(LanguageModel_union(512,S=6) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VRD2_union2_S22_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ "coordinate" information
+use 6-dim feat. add Fc(6->64)w/dropout and Fc(512+64->512+6)
+
+(LanguageModel_union(512,S=6) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VRD2_union2_S23_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ "coordinate" information
+use 6-dim feat. add Fc(512+6->512)
+
+
+(LanguageModel_union(512,S=6) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VRD2_union2_S26_1e6_test.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ "coordinate" information
+use 6-dim feat. that's it
+
+------------------------------------------------------------
+
+(LanguageModel_att(512,S=0) - LocalizationLayer_union1(pairs_RPN))
+checkpoint_VRD2_union_noAtt_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ train with prev word instead of GT (w/o attention)
+Must be similar to "checkpoint1e6_VRD2_union.t7"
+
+(LanguageModel_att(512,S=0) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VRD2_union_noAtt2_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ that feeds every time (w/o attention)
+
+(LanguageModel_att(512,S=0) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VRD2_union_noAtt3_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ that feeds every time (w/o attention)
+input word is GT words!
+--------------------------------------------------------------------
+(LanguageModel_att2(S=0) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VRD2_union_Att_1e6.t7
+=>learning rate 1e-6 (batch 32) on VRD dataset
+use "union feat"+ that feeds every time (w/ attention)
+=>require lots of memory, doesnt converge smooth
+
+(LanguageModel_att2(S=0) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VRD2_union_Att_1e6_2.t7
+=>learning rate 1e-6 (batch 16) on VRD dataset
+use "union feat"+ that feeds every time (w/ attention)
+
+
+checkpoint_VRD2_union_Att_1e7.t7
+
+
+(LanguageModel_att2(S=whatever) - LocalizationLayer_union1(pairs_RPN3) )
+checkpoint_VRD2_union_Att2_1e6.t7
+=>learning rate 1e-6 (batch 32) on VRD dataset
+use "union feat"+ that feeds every time (w/ attention)
+starts from subj box
+
+
+checkpoint_VRD2_union_Att2_1e6_2.t7
+=>too fuszzy and cannot converge
+
+
+(LanguageModel_att(S=whatever, ATT=true) - LocalizationLayer_union1(pairs_RPN3) ) 
+checkpoint_VRD2_union_Att3_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat"+ that feeds every time (w/ attention)
+dealing with subj+obj area
+
+---------------------------------------------------------------------
+(VRD2.h5 ,LanguageModel_att3 - LocalizationLayer_union1(pairs_RPN3) )
+checkpoint_VRD2_union_clsAtt_1e6.t7
+=>learning rate 1e-6 (batch 32) on VRD2 dataset
+use "union feat"+ that feeds every time (w/ attention)
+add cls loss and and cls based attention
+
+checkpoint_VRD2_union_clsAtt_1e7.t7
+
+------------------------------------------------------------------------
+(VRD2.h5, cls len 17 ,LanguageModel_union3(512,S=0,length=15) - LocalizationLayer_union1(pairs_RPN) - Pairs_whatever))
+checkpoint1e6_VRD2_union_MTL.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+union feat + POS classification(current word)
+
+(VRD2.h5, cls len 17 ,LanguageModel_union3(512,S=0,length=15) - LocalizationLayer_union1(pairs_RPN) - Pairs_whatever))
+checkpoint1e6_VRD2_union_MTL2.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+union feat + POS classification(future word)
+
+
+(VRD2.h5, cls len 17 ,LanguageModel_union4(512,S=0,length=15,W*2) - LocalizationLayer_union1(pairs_RPN) - Pairs_whatever))
+checkpoint_VRD2_union_MTL_1e6_Real.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+union feat + POS classification(current word)
+POS is fed again to the model.
+
+
+(VRD2.h5, cls len 17 ,LanguageModel_union3(512,S=0,length=15) - LocalizationLayer_union1(pairs_RPN))
+checkpoint_VRD2_union_MTL_base_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+union feat + POS classification(current word)
+input : FC from scratch
+
+
+----------------------------------------------------------------
+LanguageModel_union(FC(D->W)) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VRD2_union_1e6_Real.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat" only with FC7 feature as input (will be #1 baseline)
+
+
+LanguageModel_union(FC(D->W)) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VRD2_union2_1e6_Real.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat" only with FC7 feature as input, add recog_base for FC7
+
+
+
+(LanguageModel_union(512*3,S=6) - LocalizationLayer_union2(pairs_RPN2) - Pairs_whatever)
+checkpoint_VRD2_union_S2thin_1e6_Real.t7   
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj"+ "coordinate" information
+(1536*128+128*512 instead of 1536*512)
+use 6-dim feat. add Fc(6->64)w/dropout and Fc(512+64->512)
+
+
+
+--------------------------------------------------------------
+
+(LanguageModel_dLSTM(S=6) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VRD_dLSTM_1e6_Real.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use double LSTM!
+combine "union feat"+ "coordinate" information
+use 6-dim feat.add Fc(6->64) add Fc(512+64->512)
+
+------------------------------------------------------------------------------
+(LanguageModel_tLSTM(S=0) - LocalizationLayer_union3(pairs_RPN), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_Real.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information
+.add Fc(512*3->512)
+use FC7 from scratch
+
+(LanguageModel_tLSTM(S=0) - LocalizationLayer_union3(pairs_RPN), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_Real2.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information
+add Fc(512*3->V directly)
+use FC7 from scratch(w/o dropout)
+
+(LanguageModel_tLSTM(S=0) - LocalizationLayer_union3(pairs_RPN), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_Real3.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information
+add Fc(512*3->V directly)
+use spatial ave pooling for union
+
+(LanguageModel_tLSTM(S=0) - LocalizationLayer_union3(pairs_RPN), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_REAL.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information
+add Fc(512*3->512)-ReLU-(512->V)
+use FC((20088->512)-ReLU) for all 3
+
+
+(LanguageModel_tLSTM(S=6) - LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_REAL2.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information
+add Fc(512*3->512)-ReLU-(512->V)
+use FC((20088->512)-ReLU) for all 3
+added coordinate feat
+
+(LanguageModel_tLSTM(S=6) - LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_REAL3.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information
+add Fc(512*3->256)-ReLU-(256->V)
+use FC((20088->256)-ReLU) for all 3
+added coordinate feat
+
+(LanguageModel_tLSTM(S=0) - LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_REAL4.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat
+input : use 1*1conv(512->16)(ReLU) -  FC((784->512)-ReLU) for all 3
+output : add Fc(512*3->512)-ReLU-(512->V)
+
+
+(LanguageModel_tLSTM(S=0) - LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_REAL5.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat
+input : use 1*1conv(512->16)(ReLU) -  FC((784->512)-ReLU) for all 3
+output : (Sum pooling)-Fc(512->512)-ReLU-(512->V)
+
+
+
+(LanguageModel_tLSTM(S=0) - LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_REAL6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum pooling)-Fc(512->512)-ReLU-(512->V)
+
+
+
+
+(LanguageModel_tLSTM(S=0,ATT=true) - LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_REAL7.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for union, recog_base for subjob
+output : (attention)-Fc(512->512)-ReLU-(512->V)
+
+
+(LanguageModel_tLSTM(S=0,ATT=true) - LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_1e6_REAL8.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for union, recog_base for subjob
+output : (concat)-Fc(512*3->512)-ReLU(Dropout)-(512->V)
+
+
+
+
+
+
+LanguageModel_union(FC(D->W)) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VRD2_union_1e6_REAL.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat" only with FC7(20855->512(ReLU)) feature as input 
+
+LanguageModel_union(FC(D->W)) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VRD2_union_1e6_REAL2.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat" only with 1*1conv(512->16)(ReLU) -  FC((784->512)-ReLU)feature as input 
+
+
+LanguageModel_union(FC(D->W)) - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VRD2_union_1e6_REAL3.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat" only with (avepooling) -  FC((512->512)-ReLU)feature as input 
+(trying the first baseline again!)
+
+----------------------------------------------------------------------------------
+
+(LanguageModel_tLSTM(S=0,num_input=3) - LocalizationLayer_union3(pairs_RPN), UnionSlicer)
+checkpoint_VRD_tLSTMbase_1e6_Real.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple input (no LSTM)!
+combine "union feat"+ "subj"+"obj" information
+.add Fc(512*3->V directly)
+use spatial ave pooling for union
+
+(LanguageModel_tLSTMbase(S=0,num_input=3) - LocalizationLayer_union3(pairs_RPN), UnionSlicer)
+checkpoint_VRD_tLSTMbase_1e6_Real2.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple input (no LSTM)!
+combine "union feat"+ "subj"+"obj" information
+.add input FC((512*3->128)-ReLU-(128->512)-ReLU instead of (512*3->512)) 
+use spatial ave pooling for union
+
+(LanguageModel_tLSTMbase(S=0,num_input=3) - LocalizationLayer_union3(pairs_RPN), UnionSlicer)5.aijlmrtv
+checkpoint_VRD_tLSTMbase_1e6_Real3.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple input (no LSTM)!
+combine "union feat"+ "subj"+"obj" information (all ave pooling)
+.add input FC((512*3->256)-ReLU-Dropout-(256->512)-ReLU instead of (512*3->512)) 
+use spatial ave pooling for union
+
+
+
+(LanguageModel_tLSTMbase(S=0,num_input=3) - LocalizationLayer_union3(pairs_RPN), UnionSlicer)
+checkpoint_VRD_tLSTMbase_1e6_Real4.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use triple input (no LSTM)!
+combine "union feat"+ "subj"+"obj" information
+use avepooling for all 3
+
+
+
+
+(VRD2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_MTL_1e6.t7(Deleted)
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for union, recog_base for subjobj
+output : (Sum pooling)-Fc(512->512)-ReLU-(512->V)
+
+(VRD2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_MTL2_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for union, recog_base for subjob
+output : (Mul pooling)-Fc(512->512)-ReLU-(512->V)
+
+
+
+(VRD2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_MTL3_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for union, recog_base for subjob
+output : (concat)-Fc(512->512)-ReLU(Dropout)-(512->V)
+
+
+(VRD2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_MTL4_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for union, recog_base for subjob
+output : (attention + MTL)-Fc(512->512)-ReLU-(512->V)
+
+
+(VRD2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_MTL5_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for union, recog_base for subjob
+output : (MTLattention,POS pooling)-Fc(512->512)-ReLU-(512->V)
+
+
+(VRD2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_MTL6_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (MTLattention,POS pooling)-Fc(512->512)-ReLU-(512->V)
+
+
+
+(VRD2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_MTL7_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+
+(VRD2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VRD_tLSTM_MTL8_1e6.t7----------------------------------------(*)
+=>learning rate 1e-6 (batch 128) on VRD dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+----------------------------------------------------------------------------
+
+( train : VRD_union.h5,eval_utils , SHUFFLE=false, LanguageModel_union(512,S=0) - LocalizationLayer_union1(pairs_RPN,SHUFFLE=false)
+  test  : VRD.h5, SHUFFLE=true,      LanguageModel_union(512,S=0) - LocalizationLayer_union1(pairs_RPN,SHUFFLE=true) )
+checkpoint1e6_VRD2_union_base.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset (#0 baseline)
+use unnion region as GT box, run DenseCap model, as it is.
+
+
+
+
+
+=====================================================================================
+
+( train : _union.h5,eval_utils , SHUFFLE=false, LanguageModel_union(512,S=0) - LocalizationLayer_union1(pairs_RPN,SHUFFLE=false)
+  test  : _R.h5, SHUFFLE=true,      LanguageModel_union(512,S=0) - LocalizationLayer_union1(pairs_RPN,SHUFFLE=true) )
+checkpoint1e6_VG_union_base.t7
+=>learning rate 1e-6 (batch 64) on VG dataset (#0 baseline)
+use unnion region as GT box, run DenseCap model, as it is.
+
+
+( train : _densecap.h5,eval_utils , SHUFFLE=false, LanguageModel_union(512,S=0) - LocalizationLayer_union1(pairs_RPN,SHUFFLE=false)
+  test  : _R.h5, SHUFFLE=true,      LanguageModel_union(512,S=0) - LocalizationLayer_union1(pairs_RPN,SHUFFLE=true) )
+checkpoint1e6_VG_union_densecap.t7
+=>learning rate 1e-6 (batch 64) on VG dataset (#0 baseline)
+use unnion region as GT box, run DenseCap model, as it is.
+
+----------------------------------------------------------------
+LanguageModel_union(FC() - LocalizationLayer_union1(pairs_RPN) )
+checkpoint_VG_union_0_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use "union feat" only with FC7 feature as input (will be #1 baseline)
+
+(R2.h5, cls len 17 ,LanguageModel_union3(512,S=0,length=15) - LocalizationLayer_union1(pairs_RPN))
+checkpoint_VG_union_MTL_base_1e6.t7
+=>learning rate 1e-6 (batch 64) on VRD dataset
+union feat + POS classification(current word)
+input : FC from scratch
+
+---------------------------------------------------------------------------------------------------
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL_1e6_cntd2.t7
+=>learning rate 1e-6 (batch 64) on VG dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL2_1e6_cntd.t7
+=>learning rate 1e-6 (batch 64) on VG dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (concat)-Fc(512*3->512)-ReLU-(512->V)
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL3_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : FCscratch -  FC((4096->512)-ReLU) for union, recog_base for subjob
+output : (concat)-Fc(512*3->512)-ReLU-(512->V)
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL4_1e6.t7-------(in server 41)
+=>learning rate 1e-6 (batch 64) on VG dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : FCscratch -  FC((4096->512)-ReLU) for union, recog_base for subjob
+output : (sum)-Fc(512->512)-ReLU-(512->V)
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL5_1e6.t7-------(in server 41)
+=>learning rate 1e-6 (batch 64) on VG dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat+MTL
+fincune CNN
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (concat)-Fc(512*3->512)-ReLU-(512->V)
+
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL6_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat+MTL
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL_weighted_1e6_cntd2.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+weighting more on long sentences (sigmoid 0~2, 5.5)
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL_weighted2_1e6_cntd.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+weighting more on long sentences (data distribution, log scale)
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL_weighted3_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+weighting more on long sentences (data distribution, log scale, max 1)
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL2_1e6_weighted2.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+weighting more on long sentences (data distribution, log scale)
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (concat)-Fc(512*3->512)-ReLU-(512->V)
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_MTL2_1e6_weighted3.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+weighting more on long sentences (data distribution, log scale)
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (concat)-Fc(512*3->512)-ReLU-(512->V)
+
+
+
+
+-----------------------------------------------------------------------------------
+
+
+(LanguageModel2 - LocalizationLayer - Pairs2)
+checkpoint_VG_subjobjcoor_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use subjobd +  coordinate information
+
+
+(LanguageModel3 - LocalizationLayer - Pairs2)
+checkpoint_VG_subjobjcoor_MTL_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use subjobd +  coordinate information
+
+-----------------------------------------------------------------------------------
+
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union2(pairs_RPN))
+checkpoint_VG_union2_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj" feat as input
+input :  ave-poooling
+
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union2(pairs_RPN))
+checkpoint_VG_union2dropout_1e6_REE.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj"(dropout) feat as input
+input :  ave-poooling
+
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union3(pairs_RPN))
+checkpoint_VG_union2scratch_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj"(dropout) feat as input
+input :  ave-poooling
+
+
+
+(LanguageModel_union3(512*3,S=0)- LocalizationLayer_union2(pairs_RPN))
+checkpoint_VG_union2_MTL_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use "union feat+subj+obj" feat as input
+input :  ave-poooling
+-----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+(LanguageModel_union(512,S=6) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VG_union_coor_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use "union feat"+ "coordinate" information
+use 6-dim feat. add Fc(6->64) and Fc(512+64->512)
+
+(LanguageModel_union(512,S=6) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VG_union_coor2_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use "union feat"+ "coordinate" information
+use 6-dim feat. add Fc(6->64) and Fc(512+64->512)
+
+(LanguageModel_union(512,S=6) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VG_union_coor3_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use "union feat"+ "coordinate" information
+use 6-dim feat. add Fc(6->64)dropout and Fc(512+64->512)
+
+
+(LanguageModel_union(512,S=6) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VG_union_coor4_1e6.t7-------------------------(1)
+=>learning rate 1e-6 (batch 64) on VG dataset
+use "union feat"+ "coordinate" information
+use 6-dim feat. add Fc(6->64)dropout and Fc(512+64->512)dropout
+
+(LanguageModel_union(512,S=6) - LocalizationLayer_union1(pairs_RPN2))
+checkpoint_VG_union_coor5_1e6.t7-------------------------(0)
+=>learning rate 1e-6 (batch 64) on VG dataset
+use "union feat"+ "coordinate" information
+use 6-dim feat. add  Fc(512+6->512)dropout
+
+-----------------------------------------------------------------------------------
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VG_tLSTM2_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset--(will be final model)
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (concat)-Fc(512*3->512)-ReLU-(512->V)
+
+
+
+
+(LanguageModel_tLSTMbase(S=0,num_input=3) - LocalizationLayer_union3(pairs_RPN), UnionSlicer)
+checkpoint_VG_tLSTMbase_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple input (no LSTM)!
+combine "union feat"+ "subj"+"obj" information
+use scratch for union all 3
+
+
+
+==================================--VG long dataset -----===================================
+(make lone caption labels for VG relationship data)
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VGlongv3_tLSTM_MTL_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VGlongv3_tLSTM_MTL2_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : ave pooling -  FC((512->512)-ReLU) for all 3
+output : (concat)-Fc(512*3->512)-ReLU-(512->V)
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VGlongv3_tLSTM_MTL12_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : scratch -  FC((4096->512)-ReLU)  for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VGlongv3_tLSTM_MTL22_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : scratch -  FC((4096->512)-ReLU) for all 3
+output : (concat)-Fc(512*3->512)-ReLU-(512->V)
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VGlongv3_tLSTM_MTL13_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : scratch(w/dropout) -  FC((4096->512)-ReLU)  for all 3
+output : (Sum)-Fc(512->512)-ReLU-(512->V)
+
+
+(R2.h5, cls len 17 ,LanguageModel_tLSTM2(S=0,length=15)- LocalizationLayer_union3(pairs_RPN2), UnionSlicer)
+checkpoint_VGlongv3_tLSTM_MTL23_1e6.t7
+=>learning rate 1e-6 (batch 64) on VG dataset
+use triple LSTM!
+combine "union feat"+ "subj"+"obj" information w/ coordinate feat + MTL
+input : scratch(w/ dropout) -  FC((4096->512)-ReLU) for all 3
+output : (concat)-Fc(512*3->512)-ReLU-(512->V)
+------------------------------------------
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union2(pairs_RPN))------(1)
+checkpoint_VGlongv3_union2_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj" feat as input
+input :  ave-poooling
+
+
+(LanguageModel_union(512*3,S=0)- LocalizationLayer_union2(pairs_RPN))---------(0)
+checkpoint_VGlongv3_union2dropout_1e6.t7
+=>learning rate 1e-6 (batch 128) on VRD dataset
+use "union feat+subj+obj"(dropout) feat as input
+input :  ave-poooling
+
+
+
