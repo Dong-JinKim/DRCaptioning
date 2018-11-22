@@ -31,20 +31,20 @@ function LM:__init(opt)
   -- For mapping from image vectors to word vectors
   self.image_encoder = nn.Sequential()  
   
-  --self.image_encoder:add(nn.SpatialAveragePooling(7,7))------!!!!2222(B, 512,7,7)->(B, 512,1,1)
-  --self.image_encoder:add(nn.View(-1):setNumInputDims(3))--!!!222 (B, 512,1,1) -> (B,512)
+  self.image_encoder:add(nn.SpatialAveragePooling(7,7))------!!!!2222(B, 512,7,7)->(B, 512,1,1)
+  self.image_encoder:add(nn.View(-1):setNumInputDims(3))--!!!222 (B, 512,1,1) -> (B,512)
   
-  self.image_encoder:add(nn.View(-1):setNumInputDims(3))-- (B, 512,7,7)->(B,25088)
-  self.image_encoder:add(nn.Linear(25088,512))
-  self.image_encoder:add(nn.ReLU(true))
-  self.image_encoder:add(nn.Dropout(0.5))
-  self.image_encoder:add(nn.Linear(512,512))
-  self.image_encoder:add(nn.ReLU(true))
-  self.image_encoder:add(nn.Dropout(0.5))
+  --self.image_encoder:add(nn.View(-1):setNumInputDims(3))-- (B, 512,7,7)->(B,25088)
+  --self.image_encoder:add(nn.Linear(25088,512))
+  --self.image_encoder:add(nn.ReLU(true))
+  --self.image_encoder:add(nn.Dropout(0.5))
+  --self.image_encoder:add(nn.Linear(512,512))
+  --self.image_encoder:add(nn.ReLU(true))
+  --self.image_encoder:add(nn.Dropout(0.5))
 
 
   if S==0 then
-    self.image_encoder:add(nn.Linear(D, W))----!!!222 (B,4096)-> (B,512)
+    self.image_encoder:add(nn.Linear(W, W))----!!!222 (B,4096)-> (B,512)
     self.image_encoder:add(nn.ReLU(true))
     self.image_encoder:add(nn.View(1, -1):setNumInputDims(1)) 
   elseif S==6 then
@@ -72,12 +72,12 @@ function LM:__init(opt)
   -----------------------2-----------------
   self.image_encoder2 = nn.Sequential()  
   
-  --self.image_encoder2:add(nn.SpatialAveragePooling(7,7))------!!!!2222(B, 512,7,7)->(B, 512,1,1)
-  --self.image_encoder2:add(nn.View(-1):setNumInputDims(3))--!!!222 (B, 512,1,1) -> (B,512)
+  self.image_encoder2:add(nn.SpatialAveragePooling(7,7))------!!!!2222(B, 512,7,7)->(B, 512,1,1)
+  self.image_encoder2:add(nn.View(-1):setNumInputDims(3))--!!!222 (B, 512,1,1) -> (B,512)
   
-  self.image_encoder2:add(nn.View(-1):setNumInputDims(3))-- (B, 512,7,7)->(B,25088)
-  self.image_encoder2:add(nn.Linear(25088,512))
-  self.image_encoder2:add(nn.ReLU(true))
+  --self.image_encoder2:add(nn.View(-1):setNumInputDims(3))-- (B, 512,7,7)->(B,25088)
+  --self.image_encoder2:add(nn.Linear(25088,512))
+  --self.image_encoder2:add(nn.ReLU(true))
   
   --self.image_encoder2:add(nn.SpatialConvolution(512, 16, 1, 1))
   --self.image_encoder2:add(nn.ReLU(true))
@@ -90,12 +90,12 @@ function LM:__init(opt)
   -----------------------------------------
   self.image_encoder3 = nn.Sequential()  
   
-  --self.image_encoder3:add(nn.SpatialAveragePooling(7,7))------!!!!2222(B, 512,7,7)->(B, 512,1,1)
-  --self.image_encoder3:add(nn.View(-1):setNumInputDims(3))--!!!222 (B, 512,1,1) -> (B,512)
+  self.image_encoder3:add(nn.SpatialAveragePooling(7,7))------!!!!2222(B, 512,7,7)->(B, 512,1,1)
+  self.image_encoder3:add(nn.View(-1):setNumInputDims(3))--!!!222 (B, 512,1,1) -> (B,512)
   
-  self.image_encoder3:add(nn.View(-1):setNumInputDims(3))-- (B, 512,7,7)->(B,25088)
-  self.image_encoder3:add(nn.Linear(25088,512))
-  self.image_encoder3:add(nn.ReLU(true))
+  --self.image_encoder3:add(nn.View(-1):setNumInputDims(3))-- (B, 512,7,7)->(B,25088)
+  --self.image_encoder3:add(nn.Linear(25088,512))
+  --self.image_encoder3:add(nn.ReLU(true))
   
   --self.image_encoder3:add(nn.SpatialConvolution(512, 16, 1, 1))
   --self.image_encoder3:add(nn.ReLU(true))
@@ -216,7 +216,7 @@ function LM:__init(opt)
     if not (ATT_temp) then
     
       self.out:add(self.view_in)-- (B,1,3*H)->(B,3*H)
-      self.out:add(nn.Linear(H*3, H))
+      self.out:add(nn.Linear(3*H, H))
       self.out:add(nn.ReLU(true))
       self.out:add(nn.Dropout(0.5))---!!!
     
@@ -570,8 +570,8 @@ function LM:sample(union_vectors, subj_vectors, obj_vectors,Masks)
   
   
   --dbg()
-  --self.output = seq
-  self.output = {seq,transfer,POS}---!!!777
+  self.output = seq
+  --self.output = {seq,transfer,POS}---!!!777
   return self.output
 end
 

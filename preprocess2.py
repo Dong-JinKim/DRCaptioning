@@ -494,7 +494,7 @@ if __name__ == '__main__':
 
   # INPUT settings
   parser.add_argument('--relationship_data',
-      default='data/visual-genome/1.2/relationships_as_long_caption3.json',
+      default='data/visual-genome/1.2/relationships_as_long_caption5.json',
       help='Input JSON file with relationships')
   parser.add_argument('--image_dir',
       default='data/visual-genome/VG_100K',
@@ -505,10 +505,10 @@ if __name__ == '__main__':
 
   # OUTPUT settings
   parser.add_argument('--json_output',
-      default='data/VG-regions-dicts_R2longv3.json',
+      default='data/VG-regions-dicts_R2longv5.json',
       help='Path to output JSON file')
   parser.add_argument('--h5_output',
-      default='data/VG-regions_R2longv3.h5',
+      default='data/VG-regions_R2longv5.h5',
       help='Path to output HDF5 file')
 
   # OPTIONS

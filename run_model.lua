@@ -28,8 +28,7 @@ The output can be controlled with:
 local cmd = torch.CmdLine()
 
 -- Model options
-cmd:option('-checkpoint',
-  'data/models/densecap/densecap-pretrained-vgg16.t7')
+cmd:option('-checkpoint',  'res/checkpoint_VGlongv3_tLSTM_MTL2_1e6.t7')
 cmd:option('-image_size', 720)
 cmd:option('-rpn_nms_thresh', 0.7)
 cmd:option('-final_nms_thresh', 0.3)
@@ -78,7 +77,7 @@ function run_image(model, img_path, opt, dtype)
   -- Run the model forward
   local boxes, scores, captions = model:forward_test(img_caffe:type(dtype))
   
-  local TRANSF=true---!!!777
+  local TRANSF=false---!!!777
   local POS
   local transfer
   if TRANSF then----!!!777

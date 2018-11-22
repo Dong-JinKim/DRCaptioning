@@ -41,6 +41,7 @@ end
 local loader = DataLoader(opt)
 opt.seq_length = loader:getSeqLength()
 opt.vocab_size = loader:getVocabSize()
+dbg()
 opt.idx_to_token = loader.info.idx_to_token
 
 -- initialize the DenseCap model object

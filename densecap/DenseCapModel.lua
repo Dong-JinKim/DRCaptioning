@@ -3,8 +3,8 @@ require 'torch'
 require 'nn'
 require 'nngraph'
 
-require 'densecap.LanguageModel3'--LanguageModel / LanguageModel2  / LanguageModel_union     /LanguageModel_att
-require 'densecap.LocalizationLayer'--LocalizationLayer          / LocalizationLayer_union1 / LocalizationLayer_union2
+require 'densecap.LanguageModel_tLSTM2'--LanguageModel / LanguageModel2  / LanguageModel_union     /LanguageModel_att
+require 'densecap.LocalizationLayer_union3'--LocalizationLayer          / LocalizationLayer_union1 / LocalizationLayer_union2
 require 'densecap.modules.BoxRegressionCriterion'
 require 'densecap.modules.BilinearRoiPooling'
 require 'densecap.modules.ApplyBoxTransform'
@@ -172,10 +172,10 @@ function DenseCapModel:_buildRecognitionNet()
   
   --local lm_input = {pos_roi_codes, gt_labels}--for only subjobj?
   --local lm_input = {union, gt_labels ,spatial,subjobj}--if we use all subj+obj+union(tLSTM etc.)
-  --local lm_input = {union, gt_labels ,spatial}-- for only union or subjobj+union (early fusion)
+  local lm_input = {union, gt_labels ,spatial}-- for only union or subjobj+union (early fusion)
   
-  local Pair_output = nn.Pairs(){pos_roi_codes,union,final_boxes} --for only subjobj
-  local lm_input = {Pair_output, gt_labels}
+  --local Pair_output = nn.Pairs(){pos_roi_codes,union,final_boxes} --for only subjobj
+  --local lm_input = {Pair_output, gt_labels}
   
   
   
@@ -187,7 +187,7 @@ function DenseCapModel:_buildRecognitionNet()
   pos_roi_codes:annotate{name='code_slicer'}
   pos_roi_boxes:annotate{name='box_slicer'}
   final_box_trans:annotate{name='box_reg_branch'}
-  local inputs = {roi_feats, roi_boxes, gt_boxes, gt_labels , union}--,spatial}--, idx}----!!!333334444
+  local inputs = {roi_feats, roi_boxes, gt_boxes, gt_labels , union,spatial}--, idx}----!!!333334444
   local outputs = {
     objectness_scores,
     pos_roi_boxes, final_box_trans, final_boxes,
@@ -223,7 +223,7 @@ Input: Table with the following keys:
 function DenseCapModel:setTestArgs(kwargs)
   self.nets.localization_layer:setTestArgs{
     nms_thresh = utils.getopt(kwargs, 'rpn_nms_thresh', 0.7),
-    max_proposals = utils.getopt(kwargs, 'num_proposals', 75)---!!!! originally 1000
+    max_proposals = utils.getopt(kwargs, 'num_proposals', 50)---!!!! originally 1000
   }
   self.opt.final_nms_thresh = utils.getopt(kwargs, 'final_nms_thresh', 0.3)
 end

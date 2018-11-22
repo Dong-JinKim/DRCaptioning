@@ -51,9 +51,11 @@ function LM:__init(opt)
   self.image_encoder:add(nn.SpatialAveragePooling(7,7))------!!!!2222(B, 512,7,7)->(B, 512,1,1)
   self.image_encoder:add(nn.View(-1):setNumInputDims(3))--!!!222 (B, 512,1,1) -> (B,512)
   
-  self.image_encoder:add(nn.Linear(W*3, W))----!!!222
-  --self.image_encoder:add(nn.Linear(512*3, 128))----!!!222
-  --self.image_encoder:add(nn.Linear(128, W))---!!!!!!555
+  --self.image_encoder:add(nn.Linear(W*3, W))----!!!222
+  self.image_encoder:add(nn.Linear(512*3, 256))----!!!222
+  self.image_encoder:add(nn.ReLU(true))
+  self.image_encoder:add(nn.Dropout(0.5))
+  self.image_encoder:add(nn.Linear(256, W))---!!!!!!555
   self.image_encoder:add(nn.ReLU(true))
   
   

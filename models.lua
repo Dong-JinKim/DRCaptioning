@@ -28,7 +28,7 @@ function M.setup(opt)
     model2.net:get(2):getParameters():copy(model.net:get(2):getParameters())
     model2.net:get(3):getParameters():copy(model.net:get(3):getParameters())
     
-    --model = model2-- if using newly initialized param.
+    model = model2-- if using newly initialized param.
     --dbg()
     ------------------------------------------------------------
     

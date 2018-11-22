@@ -53,18 +53,22 @@ def main(args):
   
   options = data['opt']
   captions = data['captions']
-  vocab_size = options['vocab_size']
+  vocab_size = int(options['vocab_size'])
   token_to_idx = vocab['token_to_idx']
   idx_to_token = vocab['idx_to_token']
   
+  
+  #with open(args.result_path, 'r') as f:
+  #  captions = json.load(f)
+  #pdb.set_trace()
   total_hist = np.array([0]*vocab_size)#hist among all data
   
   per_box_hist_tot = np.array([0]*vocab_size)#hist among boxes
   
   words_per_img = [0]*len(captions) 
   words_per_box_tot = []
-  
-  for iid, img in enumerate(captions):
+  #pdb.set_trace()
+  for iid, img in enumerate(captions):# all images
     print 'collecting captions (%d/%d)'%((iid),len(captions))
     num_of_box = int((np.sqrt(4*len(img)+1)+1)/2)
     
@@ -90,6 +94,9 @@ def main(args):
         per_box_hist[bid] = per_box_hist[bid]  + hist_tmp
         per_box_hist[bjd] = per_box_hist[bjd]  + hist_tmp
         per_img_hist = per_img_hist + hist_tmp
+        
+        len(np.where(per_img_hist[1:]>0)[0])
+        
     #pdb.set_trace()    
     
 
@@ -105,7 +112,7 @@ def main(args):
 
   
 
-
+  pdb.set_trace()
   print 'total vocab =%d, words-per-img=%.3f, words-per-box=%.3f'%(total_words, np.mean(words_per_img),np.mean(words_per_box_tot))
   
   #pdb.set_trace()
