@@ -44,21 +44,21 @@ The resulting output file format is as follows:
 
 ```
 {
-{
-	"boxes": [
-		[9.4456, 46.8276,569.0354, 368.3203],
-		[183.6740, 77.7138, 185.4196, 332.1285],
-		[403.1037, 77.593994, 323.3377, 334.4553],
-		...
-		]
-	"captions": [
-  'the man wearing black shirt',
-  'the man has head',
-  'the man wearing a white shirt',
-  ...
-  ]
-  
-}
+	{
+		"boxes": [
+			[9.4456, 46.8276,569.0354, 368.3203],
+			[183.6740, 77.7138, 185.4196, 332.1285],
+			[403.1037, 77.593994, 323.3377, 334.4553],
+			...
+			]
+		"captions": [
+			  'the man wearing black shirt',
+			  'the man has head',
+			  'the man wearing a white shirt',
+			  ...
+			  ]
+
+	}
 ...
 }
 ```
