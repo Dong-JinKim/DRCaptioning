@@ -23,17 +23,45 @@ luarocks install https://raw.githubusercontent.com/jcjohnson/torch-rnn/master/to
 ```
 
 # Test
-Then point your web browser to [http://localhost:8181/view_results.html](http://localhost:8181/view_results.html).
+
+To run the model on new images, use the script `run_model.lua`. To run the model on a test image,
+use the following command:
+
+```bash
+th run_model.lua -input_image /path/to/my/image/file -output_vis_dir /path/to/the/output/folder
+```
+
 
 If you have an entire directory of images on which you want to run the model, use the `-input_dir` flag instead:
 
 ```bash
-th run_model.lua -input_dir /path/to/my/image/folder
+th run_model.lua -input_dir /path/to/my/image/folder -output_vis_dir /path/to/the/output/folder
 ```
 
+
 # Results 
+The resulting output file format is as follows:
 
-
+```
+{
+{
+	"boxes": [
+		[9.4456, 46.8276,569.0354, 368.3203],
+		[183.6740, 77.7138, 185.4196, 332.1285],
+		[403.1037, 77.593994, 323.3377, 334.4553],
+		...
+		]
+	"captions": [
+  'the man wearing black shirt',
+  'the man has head',
+  'the man wearing a white shirt',
+  ...
+  ]
+  
+}
+...
+}
+```
 
 
 
