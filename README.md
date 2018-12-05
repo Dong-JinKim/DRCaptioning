@@ -1,6 +1,6 @@
 # DRCaptioning
 ---
-The instruction of the relational captioning.
+The instruction of the object-centric caption generation.
 
 # Preliminaries
 Our model is implemented in [Torch](http://torch.ch/), and depends on the following packages: 
