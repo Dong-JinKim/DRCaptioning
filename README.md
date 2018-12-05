@@ -43,7 +43,7 @@ th run_model.lua -input_dir /path/to/my/image/folder -output_vis_dir /path/to/th
 The resulting output file format is as follows:
 
 ```
-{
+[
 	{
 		"boxes": [
 			[9.4456, 46.8276,569.0354, 368.3203],
@@ -60,7 +60,7 @@ The resulting output file format is as follows:
 
 	}
 ...
-}
+]
 ```
 
 
